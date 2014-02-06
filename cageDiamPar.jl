@@ -1,4 +1,5 @@
-# CD = cageDiam(file, window)
+ 
+# CD = cageDiamPar(file, window)
 # file    - File containing the trajectories. First column is time, the rest
 #	    are x1,y1,z1...xN,yN,zN where N is the number of trajectories.
 # window  - Sliding time window length in frames. Must be odd. Default is 7
@@ -14,7 +15,7 @@
 
 using Distance
 
-function cageDiam(file::String, window::Int)
+function cageDiamPar(file::String, window::Int)
 
     T = readdlm(file)
     T = T[:, 2:end]       		# Remove first column containing time
@@ -26,7 +27,7 @@ function cageDiam(file::String, window::Int)
     halfWin = floor(window/2)
 
     iT2 = 1
-    for iT=1:3:size(T,2)                # Go over x-dimension of traj
+    @parallel for iT=1:3:size(T,2)      # Go over x-dimension of traj
 	
 	TT = T[:, iT:(iT+2)]		# Single trajectory
 	
